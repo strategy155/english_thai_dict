@@ -51,9 +51,9 @@ def new_extract(path):
             if len(row.find_all('td'))==2:
                 for tokens in row.find_all('td')[1].get_text().split(';'):
                     try:
-                        words_reversed[tokens.replace('"', '')].append(rows[1].get_text())
+                        words_reversed[tokens.replace('"', '').lower().lstrip(' ')].append(rows[1].get_text())
                     except KeyError:
-                        words_reversed[tokens.replace('"', '')]=[rows[1].get_text()]
+                        words_reversed[tokens.replace('"', '').lower().lstrip(' ')]=[rows[1].get_text()]
                     continue
             rows = row.find_all('td')
             try:
@@ -65,25 +65,23 @@ def new_extract(path):
 def append_all_rev(rows, wordshehe):
     try:
         if rows[2].get_text()=='example sentence':
-            wordshehe[rows[3].get_text().replace('"', '')].append(rows[1].get_text())
+            wordshehe[rows[3].get_text().replace('"', '').lower().lstrip(' ')].append(rows[1].get_text())
         else:
             for tokens in rows[3].get_text().split(';'):
-                wordshehe[tokens.replace('"', '')].append(rows[1].get_text())
+                wordshehe[tokens.replace('"', '').lower().lstrip(' ')].append(rows[1].get_text())
         return None
     except KeyError:
         if rows[2].get_text()=='example sentence':
-            wordshehe[rows[3].get_text().replace('"', '')]=[rows[1].get_text()]
+            wordshehe[rows[3].get_text().replace('"', '').lower().lstrip(' ')]=[rows[1].get_text()]
         else:
             for tokens in rows[3].get_text().split(';'):
-                wordshehe[tokens.replace('"', '')]=[rows[1].get_text()]
+                wordshehe[tokens.replace('"', '').lower().lstrip(' ')]=[rows[1].get_text()]
         return None
 
 
 def dump_dict(wordsullu,name):
     with open(name+'.json', 'w') as f:
         dump(wordsullu,f, ensure_ascii=False)
-
-
 
 
 if __name__ == '__main__':
@@ -94,6 +92,5 @@ if __name__ == '__main__':
             filepath=join(root,file)
             extract(filepath)
             new_extract(filepath)
-
-    dump_dict(words, 'thai_to_english')
+    # dump_dict(words, 'thai_to_english')
     dump_dict(words_reversed, 'english_to_thai')

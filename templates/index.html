@@ -10,6 +10,10 @@
   <p><input type="text" name="word" value="Слово сюда"><Br>
     <p><input type="submit" value="Отправить"></p>
  </form>
-<h1>{{thai_word}}</h1>
+<h1>
+    {% for lul in thai_word %}
+    {{lul}}
+    {% endfor %}
+    </h1>
 </body>
 </html>
